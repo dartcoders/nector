@@ -74,7 +74,8 @@ class NectorController {
       enableVibration: false,
       playSound: false,
     );
-    const iOSNotificationDetails = IOSNotificationDetails(presentSound: false);
+    const iOSNotificationDetails =
+        DarwinNotificationDetails(presentSound: false);
     const platformChannelDetails = NotificationDetails(
       android: androidNotificationDetails,
       iOS: iOSNotificationDetails,
@@ -91,18 +92,25 @@ class NectorController {
 
   void _initialiseNotificationsPlugin() async {
     const initializationSettingsAndroid = AndroidInitializationSettings('');
-    const initializationSettingsIOS = IOSInitializationSettings();
+    const initializationSettingsIOS = DarwinInitializationSettings();
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
-    await _flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: (message) => _onSelectNotification(message),
-    );
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:
+          _onSelectNotification();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
-  void _onSelectNotification(String? message) {
+  void _onSelectNotification() {
     navigateToInspector();
   }
 
