@@ -6,7 +6,7 @@ import 'package:nector/model/network_call.dart';
 import 'package:nector/model/network_request.dart';
 import 'package:nector/model/network_response.dart';
 
-class NectorDioInterceptor extends InterceptorsWrapper {
+class NectorDioInterceptor extends Interceptor {
   final NectorController _controller;
   NectorDioInterceptor(this._controller);
 

@@ -31,7 +31,9 @@ class NectorController {
     required this.appIcon,
     required GlobalKey<NavigatorState> navigatorKey,
   }) : _navigatorKey = navigatorKey {
+    Future.delayed(const Duration(seconds: 3), () {
     _initialiseNotificationsPlugin();
+    });
     callsSubject.listen((_) => _onCallsChanged());
   }
 
