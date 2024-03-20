@@ -45,9 +45,9 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///Users/vahak09/.pub-cache/hosted/pub.dev/dio-5.4.1",
+      "rootUri": "file:///Users/vahak09/.pub-cache/hosted/pub.dev/dio-4.0.6",
       "packageUri": "lib/",
-      "languageVersion": "2.15"
+      "languageVersion": "2.12"
     },
     {
       "name": "fake_async",
@@ -272,7 +272,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-03-20T05:08:28.531730Z",
+  "generated": "2024-03-20T08:39:59.098387Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }

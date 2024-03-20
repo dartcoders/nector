@@ -10,6 +10,8 @@ import 'package:rxdart/rxdart.dart';
 class NectorController {
   final String appName;
 
+  final String appIcon;
+
   final BehaviorSubject<List<NectorNetworkCall>> callsSubject =
       BehaviorSubject.seeded([]);
 
@@ -26,6 +28,7 @@ class NectorController {
   NectorController({
     required this.showNotification,
     required this.appName,
+    required this.appIcon,
     required GlobalKey<NavigatorState> navigatorKey,
   }) : _navigatorKey = navigatorKey {
     _initialiseNotificationsPlugin();
@@ -68,32 +71,38 @@ class NectorController {
 
   Future<void> _showNotification() async {
     _isNotificationProcessing = true;
-    const androidNotificationDetails = AndroidNotificationDetails(
-      'nector',
-      'Nector',
+    const channelId = 'Nector';
+    const channelName = 'Nector';
+    const channelDescription = 'Nector';
+    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      channelId,
+      channelName,
+      channelDescription: channelDescription,
       enableVibration: false,
       playSound: false,
+      largeIcon: DrawableResourceAndroidBitmap(appIcon),
     );
-    const iOSNotificationDetails =
+    const iOSPlatformChannelSpecifics =
         DarwinNotificationDetails(presentSound: false);
-    const platformChannelDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: iOSNotificationDetails,
+    final platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
     );
     await _flutterLocalNotificationsPlugin.show(
       0,
       'Recording Network Activity',
       '${callsSubject.value.length} requests',
-      platformChannelDetails,
+      platformChannelSpecifics,
+      payload: '',
     );
     _isNotificationProcessing = false;
-    return;
   }
 
   void _initialiseNotificationsPlugin() async {
-    const initializationSettingsAndroid = AndroidInitializationSettings('');
+    AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings(appIcon);
     const initializationSettingsIOS = DarwinInitializationSettings();
-    const initializationSettings = InitializationSettings(
+    InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -128,7 +137,7 @@ class NectorController {
     removeCallsListView();
     removeCallDetailView();
     _callsListView = widget;
-    _navigatorKey.currentState?.overlay?.insert(widget);
+    _navigatorKey.currentState!.overlay!.insert(widget);
   }
 
   void addCallDetailView(OverlayEntry widget) {

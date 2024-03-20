@@ -13,6 +13,7 @@ class Nector {
 
   Nector({
     required GlobalKey<NavigatorState> navigatorKey,
+    required appIcon,
     bool showNotification = true,
     String appName = '',
   }) {
@@ -21,6 +22,7 @@ class Nector {
       showNotification: _showNotification,
       navigatorKey: navigatorKey,
       appName: appName,
+      appIcon: appIcon,
     );
   }
 
