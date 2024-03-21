@@ -35,18 +35,18 @@ class Nector {
 
   /// Add this to the onRequest override of your existing interceptor
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    return _interceptor.onRequest(options, handler);
+    return _interceptor.onRequest(options, handler, skipNext: true);
   }
 
   /// Add this to the onResponse override of your existing interceptor
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    return _interceptor.onResponse(response, handler);
+    return _interceptor.onResponse(response, handler, skipNext: true);
   }
 
   /// Add this to the onError override of your existing interceptor
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    return _interceptor.onError(err, handler);
+    return _interceptor.onError(err, handler, skipNext: true);
   }
 
   /// Navigates to API call inspector where all the network calls will be listed.

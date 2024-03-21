@@ -11,7 +11,8 @@ class NectorDioInterceptor extends Interceptor {
   NectorDioInterceptor(this._controller);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler,
+      {bool skipNext = false}) {
     final call = NectorNetworkCall(options.hashCode);
 
     final uri = options.uri;
@@ -48,11 +49,12 @@ class NectorDioInterceptor extends Interceptor {
       ..networkResponse = NectorNetworkResponse();
 
     _controller.addNetworkCall(call);
-    handler.next(options);
+    if (!skipNext) handler.next(options);
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(Response response, ResponseInterceptorHandler handler,
+      {bool skipNext = false}) {
     final networkResponse = NectorNetworkResponse()
       ..statusCode = response.statusCode;
 
@@ -72,11 +74,12 @@ class NectorDioInterceptor extends Interceptor {
     });
     networkResponse.headers = headers;
     _controller.addResponse(networkResponse, response.requestOptions.hashCode);
-    handler.next(response);
+    if (!skipNext) handler.next(response);
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioError err, ErrorInterceptorHandler handler,
+      {bool skipNext = false}) {
     final networkResponse = NectorNetworkResponse()..time = DateTime.now();
     if (err.response == null) {
       networkResponse.statusCode = -1;
@@ -102,5 +105,6 @@ class NectorDioInterceptor extends Interceptor {
       networkResponse,
       err.response!.requestOptions.hashCode,
     );
+    if (!skipNext) handler.next(err);
   }
 }
