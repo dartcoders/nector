@@ -77,38 +77,30 @@ class NectorDioInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    // final networkError = NectorNetworkError()..error = err.toString();
-    // if (err is Error) {
-    //   final error = err as Error;
-    //   networkError.stackTrace = error.stackTrace;
-    // }
-    // _controller.addError(networkError, err.requestOptions.hashCode);
-    // final networkResponse = NectorNetworkResponse()..time = DateTime.now();
-    // if (err.response == null) {
-    //   networkResponse.statusCode = -1;
-    //   _controller.addResponse(networkResponse, err.requestOptions.hashCode);
-    // } else {
-    //   networkResponse.statusCode = err.response!.statusCode;
-    //   if (err.response!.data == null) {
-    //     networkResponse
-    //       ..body = ''
-    //       ..size = 0;
-    //   } else {
-    //     networkResponse
-    //       ..body = err.response!.data
-    //       ..size = utf8.encode(err.response!.data.toString()).length;
-    //   }
-    // }
-    // final headers = <String, String>{};
-    // err.response!.headers.forEach((header, values) {
-    //   headers[header] = values.toString();
-    // });
-    // networkResponse.headers = headers;
-    // _controller.addResponse(
-    //   networkResponse,
-    //   err.response!.requestOptions.hashCode,
-    // );
-    // handler.next(err);
-    super.onError(err, handler);
+    final networkResponse = NectorNetworkResponse()..time = DateTime.now();
+    if (err.response == null) {
+      networkResponse.statusCode = -1;
+      _controller.addResponse(networkResponse, err.requestOptions.hashCode);
+    } else {
+      networkResponse.statusCode = err.response!.statusCode;
+      if (err.response!.data == null) {
+        networkResponse
+          ..body = ''
+          ..size = 0;
+      } else {
+        networkResponse
+          ..body = err.response!.data
+          ..size = utf8.encode(err.response!.data.toString()).length;
+      }
+    }
+    final headers = <String, String>{};
+    err.response!.headers.forEach((header, values) {
+      headers[header] = values.toString();
+    });
+    networkResponse.headers = headers;
+    _controller.addResponse(
+      networkResponse,
+      err.response!.requestOptions.hashCode,
+    );
   }
 }

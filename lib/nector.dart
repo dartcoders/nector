@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nector/controller/nector_contoller.dart';
 import 'package:nector/controller/nector_dio_interceptor.dart';
@@ -5,11 +6,11 @@ import 'package:nector/controller/nector_dio_interceptor.dart';
 export 'nector.dart';
 
 class Nector {
-  /// Whether you want to see the notification when a new http call happens.
-  bool _showNotification = true;
-
   /// Instance of the nector logic bloc
   late NectorController _controller;
+
+  /// Instance of dio interceptor
+  late NectorDioInterceptor _interceptor;
 
   Nector({
     required GlobalKey<NavigatorState> navigatorKey,
@@ -17,19 +18,35 @@ class Nector {
     bool showNotification = true,
     String appName = '',
   }) {
-    _showNotification = showNotification;
     _controller = NectorController(
-      showNotification: _showNotification,
+      showNotification: showNotification,
       navigatorKey: navigatorKey,
       appName: appName,
       appIcon: appIcon,
     );
+    _interceptor = NectorDioInterceptor(_controller);
   }
 
   /// This should be used to get the instance of dio interceptor
   /// which can be applied to dio instance
   NectorDioInterceptor getDioInterceptor() {
-    return NectorDioInterceptor(_controller);
+    return _interceptor;
+  }
+
+  /// Add this to the onRequest override of your existing interceptor
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    return _interceptor.onRequest(options, handler);
+  }
+
+  /// Add this to the onResponse override of your existing interceptor
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
+    return _interceptor.onResponse(response, handler);
+  }
+
+  /// Add this to the onError override of your existing interceptor
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    return _interceptor.onError(err, handler);
   }
 
   /// Navigates to API call inspector where all the network calls will be listed.
