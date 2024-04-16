@@ -14,7 +14,6 @@ class Nector {
 
   Nector({
     required GlobalKey<NavigatorState> navigatorKey,
-    required appIcon,
     bool showNotification = true,
     String appName = '',
   }) {
@@ -22,7 +21,6 @@ class Nector {
       showNotification: showNotification,
       navigatorKey: navigatorKey,
       appName: appName,
-      appIcon: appIcon,
     );
     _interceptor = NectorDioInterceptor(_controller);
   }

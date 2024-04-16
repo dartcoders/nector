@@ -13,7 +13,6 @@ dependencies:
   plugin_platform_interface: ^2.1.8
   rxdart: ^0.27.7
   dio: ^4.0.6
-  flutter_local_notifications: ^17.0.0
 
 dev_dependencies:
   flutter_test:
@@ -38,7 +37,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.nector
+        package: com.dartcoders.nector
         pluginClass: NectorPlugin
       ios:
         pluginClass: NectorPlugin

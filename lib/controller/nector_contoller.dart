@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 import 'package:nector/model/network_call.dart';
 import 'package:nector/model/network_response.dart';
 import 'package:nector/utils/nector_utils.dart';
@@ -10,16 +10,12 @@ import 'package:rxdart/rxdart.dart';
 class NectorController {
   final String appName;
 
-  final String appIcon;
-
   final BehaviorSubject<List<NectorNetworkCall>> callsSubject =
       BehaviorSubject.seeded([]);
 
   final GlobalKey<NavigatorState> _navigatorKey;
 
   final int _maxCallsCount = 1000;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   bool _isNotificationProcessing = false, showNotification;
 
@@ -28,13 +24,10 @@ class NectorController {
   NectorController({
     required this.showNotification,
     required this.appName,
-    required this.appIcon,
     required GlobalKey<NavigatorState> navigatorKey,
   }) : _navigatorKey = navigatorKey {
-    Future.delayed(const Duration(seconds: 3), () {
     _initialiseNotificationsPlugin();
-    });
-    callsSubject.listen((_) => _onCallsChanged());
+    callsSubject.listen((_) => _onCallsChanged()); 
   }
 
   /// Adds network call to calls subject
@@ -72,53 +65,23 @@ class NectorController {
   }
 
   Future<void> _showNotification() async {
-    _isNotificationProcessing = true;
-    const channelId = 'Nector';
-    const channelName = 'Nector';
-    const channelDescription = 'Nector';
-    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      channelId,
-      channelName,
-      channelDescription: channelDescription,
-      enableVibration: false,
-      playSound: false,
-      largeIcon: DrawableResourceAndroidBitmap(appIcon),
-    );
-    const iOSPlatformChannelSpecifics =
-        DarwinNotificationDetails(presentSound: false);
-    final platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-    await _flutterLocalNotificationsPlugin.show(
-      0,
-      'Recording Network Activity',
-      '${callsSubject.value.length} requests',
-      platformChannelSpecifics,
-      payload: '',
-    );
-    _isNotificationProcessing = false;
+    var methodChannel = MethodChannel("nector");
+    Map<String, String> channelMap = {
+      "title": "Recording Network Activity",
+      "description": "${callsSubject.value.length} requests"
+    };
+    await methodChannel.invokeMethod("showNotification", channelMap);
   }
 
   void _initialiseNotificationsPlugin() async {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(appIcon);
-    const initializationSettingsIOS = DarwinInitializationSettings();
-    InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) {
-      switch (notificationResponse.notificationResponseType) {
-        case NotificationResponseType.selectedNotification:
-          _onSelectNotification();
-          break;
-        default:
-          break;
-      }
-    });
+    var methodChannel = MethodChannel("nector");
+    Map<String, String> channelMap = {
+      "id": "Nector",
+      "name": "Nector",
+      "description": "Nector"
+    };
+
+    await methodChannel.invokeMethod("createNotificationChannel", channelMap);
   }
 
   void _onSelectNotification() {
