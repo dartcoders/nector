@@ -17,6 +17,8 @@ class NectorController {
 
   final int _maxCallsCount = 1000;
 
+  final MethodChannel methodChannel = MethodChannel("nector");
+
   bool _isNotificationProcessing = false, showNotification;
 
   OverlayEntry? _callsListView, _callDetailView;
@@ -65,7 +67,6 @@ class NectorController {
   }
 
   Future<void> _showNotification() async {
-    var methodChannel = MethodChannel("nector");
     Map<String, String> channelMap = {
       "title": "Recording Network Activity",
       "description": "${callsSubject.value.length} requests"
@@ -74,7 +75,6 @@ class NectorController {
   }
 
   void _initialiseNotificationsPlugin() async {
-    var methodChannel = MethodChannel("nector");
     Map<String, String> channelMap = {
       "id": "Nector",
       "name": "Nector",
@@ -82,6 +82,18 @@ class NectorController {
     };
 
     await methodChannel.invokeMethod("createNotificationChannel", channelMap);
+    methodChannel.setMethodCallHandler(methodHandler);
+  }
+
+  Future<void> methodHandler(MethodCall call) {
+    switch (call.method) {
+      case "onClickNotification":
+        _onSelectNotification();
+        break;
+      default:
+        print('No method handler for method ${call.method}');
+    }
+    return Future.value();
   }
 
   void _onSelectNotification() {

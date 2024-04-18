@@ -7,7 +7,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -33,10 +32,6 @@ class NectorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, NewIntentL
     context = flutterPluginBinding.applicationContext
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "nector")
     channel.setMethodCallHandler(this)
-    // val receiver = NectorNotificationReceiver()
-    // val intentFilter = IntentFilter()
-    // intentFilter.addAction("com.nector.NOTIFICATION_CLICKED")
-    // context.registerReceiver(receiver, intentFilter)
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
@@ -62,29 +57,20 @@ class NectorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, NewIntentL
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "createNotificationChannel") {
-      val argData = call.arguments as java.util.HashMap<String, String>
-      val completed = createNotificationChannel(argData)
-      if (completed) result.success(completed)
-      else result.error("", "Unable to create channel", null)
-    } else {
-      result.notImplemented()
-    }
-
-    if (call.method == "showNotification") {
-      val argData = call.arguments as java.util.HashMap<String, String>
-      val service = NectorNotificationService(context)
-      service.showNotification(argData)
-    }
-  }
-
-  private fun getLaunchIntent(context: Context): Intent? {
-    val packageName = context.packageName
-    val packageManager = context.packageManager
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-      packageManager.getLaunchIntentForPackage(packageName)
-    } else {
-      TODO("VERSION.SDK_INT < CUPCAKE")
+    when (call.method) {
+      Constants.CREATE_NOTIFICATION_CHANNEL_METHOD_CALL -> {
+        val argData = call.arguments as java.util.HashMap<String, String>
+        val completed = createNotificationChannel(argData)
+        if (completed) result.success(completed)
+        else result.error("", "Unable to create channel", null)
+      }
+      Constants.SHOW_NOTIFICATION_METHOD_CALL -> {
+        val argData = call.arguments as java.util.HashMap<String, String>
+        val service = NectorNotificationService(context)
+        val completed = service.showNotification(argData)
+        if (completed) result.success(completed)
+      }
+      else -> result.notImplemented()
     }
   }
 
@@ -106,8 +92,10 @@ class NectorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, NewIntentL
   }
 
   override fun onNewIntent(intent: Intent): Boolean {
-    // to be implemented yet
-    Log.e("hello", "====================================>")
+    val action: String? = intent.getAction()
+    if (action == Constants.NOTIFICATION_CLICK_ACTION) {
+      channel.invokeMethod(Constants.ON_CLICK_NOTIFICATION_METHOD_CALL, "")
+    }
     return true
   }
 }
