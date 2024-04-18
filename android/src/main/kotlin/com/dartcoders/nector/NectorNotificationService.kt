@@ -32,7 +32,7 @@ class NectorNotificationService(private val context: Context) {
                                                 )
                                                 .setContentTitle(mapData["title"])
                                                 .setContentText(mapData["description"])
-                                                .setSmallIcon(R.drawable.arrow_up_float)
+                                                .setSmallIcon(R.drawable.presence_online)
                                                 .setAutoCancel(true)
                                                 .setContentIntent(activityIntent)
                                                 .build()
