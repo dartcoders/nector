@@ -1,4 +1,4 @@
-package com.example.nector
+package com.dartcoders.nector
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

@@ -1,5 +1,5 @@
-package com.example.nector_example
+package com.dartcoders.nector_example
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity()
+class MainActivity : FlutterActivity()
