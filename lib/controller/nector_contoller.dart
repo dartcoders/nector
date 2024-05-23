@@ -32,7 +32,6 @@ class NectorController {
     callsSubject.listen((_) => _onCallsChanged());
   }
 
-  /// Adds network call to calls subject
   void addNetworkCall(NectorNetworkCall call) {
     final int callsCount = callsSubject.value.length;
     final calls = List<NectorNetworkCall>.from(callsSubject.value);
@@ -41,7 +40,6 @@ class NectorController {
     callsSubject.add(calls);
   }
 
-  /// Adds response to existing network call
   void addResponse(NectorNetworkResponse response, int requestId) {
     final requestCall = _getRequestCall(requestId);
     if (requestCall == null) {
@@ -89,7 +87,6 @@ class NectorController {
         _onSelectNotification();
         break;
       default:
-        print('No method handler for method ${call.method}');
     }
     return Future.value();
   }
