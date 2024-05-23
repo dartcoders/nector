@@ -9,7 +9,6 @@
 .history
 .svn/
 # IntelliJ related
-*.iml
 *.ipr
 *.iws
 .idea/
@@ -61,7 +60,6 @@ DerivedData/
 
 # Flutter/Dart/Pub related
 *.last_build_id
-*.lock
 lcov.info
 
 # Web related
