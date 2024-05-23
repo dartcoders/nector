@@ -17,9 +17,9 @@ class NectorController {
 
   final int _maxCallsCount = 1000;
 
-  final MethodChannel methodChannel = MethodChannel("nector");
+  final MethodChannel methodChannel = const MethodChannel("nector");
 
-  bool _isNotificationProcessing = false, showNotification;
+  bool showNotification;
 
   OverlayEntry? _callsListView, _callDetailView;
 
@@ -29,7 +29,7 @@ class NectorController {
     required GlobalKey<NavigatorState> navigatorKey,
   }) : _navigatorKey = navigatorKey {
     _initialiseNotificationsPlugin();
-    callsSubject.listen((_) => _onCallsChanged()); 
+    callsSubject.listen((_) => _onCallsChanged());
   }
 
   /// Adds network call to calls subject
@@ -59,10 +59,8 @@ class NectorController {
   }
 
   Future<void> _onCallsChanged() async {
-    if (callsSubject.value.isNotEmpty) {
-      if (showNotification && !_isNotificationProcessing) {
-        await _showNotification();
-      }
+    if (callsSubject.value.isNotEmpty && showNotification) {
+      await _showNotification();
     }
   }
 
