@@ -1,63 +1,42 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:nector/nector.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const NectorExample());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class NectorExample extends StatefulWidget {
+  const NectorExample({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<NectorExample> createState() => _NectorExampleState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  // final _nectorPlugin = Nector();
+class _NectorExampleState extends State<NectorExample> {
+  late Dio _dio;
+  late Nector _nector;
+  final GlobalKey<NavigatorState> _mainNavigatorKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
+    _dio = Dio(BaseOptions());
+    _nector = Nector(navigatorKey: _mainNavigatorKey);
+    _dio.interceptors.add(_nector.getDioInterceptor());
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    // try {
-    //   platformVersion = await _nectorPlugin.getPlatformVersion() ??
-    //       'Unknown platform version';
-    // } on PlatformException {
-    //   platformVersion = 'Failed to get platform version.';
-    // }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    // setState(() {
-    //   _platformVersion = platformVersion;
-    // });
+    /// Or if you are using queued interceptors you can add the
+    /// interceptors respectively at onRequest, onResponse, onError
+    
+    // _dio.interceptors.add(QueuedInterceptorsWrapper(
+    //   onRequest: (options, handler) => _nector.onRequest(options, handler),
+    //   onResponse: (options, handler) => _nector.onResponse(options, handler),
+    //   onError: (options, handler) => _nector.onError(options, handler),
+    // ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-      ),
-    );
+    return const MaterialApp();
   }
 }
