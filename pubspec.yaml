@@ -1,0 +1,29 @@
+name: nector
+description: "A HTTP inspector tool to analyse the network calls in a flutter app."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+  rxdart: ^0.27.7
+  dio: ^4.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.dartcoders.nector
+        pluginClass: NectorPlugin
+      ios:
+        pluginClass: NectorPlugin
