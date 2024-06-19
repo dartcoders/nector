@@ -38,9 +38,7 @@ class NectorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, NewIntentL
     channel.setMethodCallHandler(null)
   }
 
-  override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
-  }
+  override fun onDetachedFromActivity() {}
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     binding.addOnNewIntentListener(this)
@@ -52,9 +50,7 @@ class NectorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, NewIntentL
     activity = binding.activity
   }
 
-  override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
-  }
+  override fun onDetachedFromActivityForConfigChanges() {}
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {

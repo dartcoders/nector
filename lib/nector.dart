@@ -43,7 +43,7 @@ class Nector {
   }
 
   /// Add this to the onError override of your existing interceptor
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     return _interceptor.onError(err, handler, skipNext: true);
   }
 
