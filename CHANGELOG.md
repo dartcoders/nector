@@ -6,3 +6,4 @@
 
 - TODO: Upgraded dio version
   Disabled on click dismiss of entry notification
+  UI enhancements
