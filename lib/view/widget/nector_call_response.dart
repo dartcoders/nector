@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nector/model/network_response.dart';
+import 'package:nector/utils/nector_extensions.dart';
 import 'package:nector/utils/nector_utils.dart';
 import 'package:nector/view/widget/info_text.dart';
 
@@ -26,9 +27,17 @@ class NectorCallResponseView extends StatelessWidget {
             title: 'Status code',
             description: response.statusCode.toString(),
           ),
-          CallInfoText(
+          const CallInfoText(
             title: 'Body',
-            description: _utils.beautifyJson(response.body),
+            description: '',
+          ),
+          10.height,
+          SelectableText(
+            _utils.beautifyJson(response.body),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
