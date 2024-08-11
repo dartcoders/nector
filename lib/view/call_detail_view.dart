@@ -78,7 +78,7 @@ class NectorCallDetailView extends StatelessWidget {
         text: _utils.createCurlCommand(
           networkCall.uri,
           networkCall.method,
-          body: networkCall.networkRequest?.body,
+          body: networkCall.networkRequest?.body?.toString(),
           headers: networkCall.networkRequest?.headers,
           queryParams: networkCall.networkRequest?.queryParamters,
         ),
