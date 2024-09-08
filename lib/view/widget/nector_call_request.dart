@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nector/model/network_request.dart';
 import 'package:nector/utils/nector_utils.dart';
@@ -30,7 +31,9 @@ class NectorCallRequestView extends StatelessWidget {
               title: 'Body',
               description: request.body is String
                   ? _utils.beautifyJson(jsonDecode(request.body))
-                  : _utils.beautifyJson(request.body),
+                  : request.body is FormData
+                      ? _utils.beautifyJson(_utils.formDataToJson(request.body))
+                      : _utils.beautifyJson(request.body),
             ),
           if (request.queryParamters.isNotEmpty)
             CallInfoText(

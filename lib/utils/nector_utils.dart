@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class NectorUtils {
@@ -31,7 +32,8 @@ class NectorUtils {
   String createCurlCommand(String url, String method,
       {String? body,
       Map<String, dynamic>? headers,
-      Map<String, dynamic>? queryParams}) {
+      Map<String, dynamic>? queryParams,
+      FormData? formData}) {
     final curl = StringBuffer('curl');
     curl.write(' -X "$method" ');
     curl.write(url);
@@ -52,8 +54,18 @@ class NectorUtils {
     }
 
     /// Add body to cURL
-    if (body != null && body.isNotEmpty) {
+    if (body != null && body.isNotEmpty && formData == null) {
       curl.write(' -d "${jsonEncode(body)}"');
+    }
+
+    if (formData != null) {
+      for (var field in formData.fields) {
+        curl.write(" -F '${field.key}=${field.value}'");
+      }
+      for (var file in formData.files) {
+        final filename = file.value.filename ?? 'file';
+        curl.write(" -F '${file.key}=@$filename'");
+      }
     }
 
     return curl.toString();
@@ -71,5 +83,16 @@ class NectorUtils {
     } catch (e) {
       return null;
     }
+  }
+
+  Map<String, dynamic> formDataToJson(FormData formData) {
+    final Map<String, dynamic> json = {};
+    for (var field in formData.fields) {
+      json[field.key] = field.value;
+    }
+    for (var file in formData.files) {
+      json[file.key] = file.value.filename;
+    }
+    return json;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nector/model/network_call.dart';
@@ -81,6 +82,9 @@ class NectorCallDetailView extends StatelessWidget {
           body: networkCall.networkRequest?.body?.toString(),
           headers: networkCall.networkRequest?.headers,
           queryParams: networkCall.networkRequest?.queryParamters,
+            formData: networkCall.networkRequest?.body is FormData
+                ? networkCall.networkRequest?.body as FormData
+                : null
         ),
       ),
     );
