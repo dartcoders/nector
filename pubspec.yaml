@@ -1,5 +1,5 @@
 name: nector
-description: "A HTTP inspector tool to analyse the network calls in a flutter app."
+description: "A HTTP inspector tool for "dio" to analyse the network calls in a flutter app."
 version: 1.1.0
 homepage: "https://github.com/dartcoders/nector"
 
