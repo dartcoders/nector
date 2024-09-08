@@ -35,6 +35,7 @@ class _NectorCallResponseViewState extends State<NectorCallResponseView> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -111,7 +112,14 @@ class _NectorCallResponseViewState extends State<NectorCallResponseView> {
               ]
             ],
           ),
-          20.height,
+          if (_isSearchEnabled && _searchController.text.isNotEmpty) ...[
+            10.height,
+            Text(
+              '${_foundIndices.length} results found',
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
+          10.height,
           Expanded(
             child: SingleChildScrollView(
               controller: _scrollController,

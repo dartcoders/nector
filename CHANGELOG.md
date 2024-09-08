@@ -18,4 +18,8 @@
 
 ## 1.1.1
 
-- Formatting
+- Pub score enhancement
+
+## 1.1.2
+
+- UI enhancement
