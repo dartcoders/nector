@@ -76,16 +76,13 @@ class NectorCallDetailView extends StatelessWidget {
   _onClickCopyRequest() {
     Clipboard.setData(
       ClipboardData(
-        text: _utils.createCurlCommand(
-          networkCall.uri,
-          networkCall.method,
-          body: networkCall.networkRequest?.body?.toString(),
-          headers: networkCall.networkRequest?.headers,
-          queryParams: networkCall.networkRequest?.queryParamters,
+        text: _utils.createCurlCommand(networkCall.uri, networkCall.method,
+            body: networkCall.networkRequest?.body?.toString(),
+            headers: networkCall.networkRequest?.headers,
+            queryParams: networkCall.networkRequest?.queryParamters,
             formData: networkCall.networkRequest?.body is FormData
                 ? networkCall.networkRequest?.body as FormData
-                : null
-        ),
+                : null),
       ),
     );
   }

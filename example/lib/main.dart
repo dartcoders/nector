@@ -27,7 +27,7 @@ class _NectorExampleState extends State<NectorExample> {
 
     /// Or if you are using queued interceptors you can add the
     /// interceptors respectively at onRequest, onResponse, onError
-    
+
     // _dio.interceptors.add(QueuedInterceptorsWrapper(
     //   onRequest: (options, handler) => _nector.onRequest(options, handler),
     //   onResponse: (options, handler) => _nector.onResponse(options, handler),
