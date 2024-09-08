@@ -15,3 +15,7 @@
 - Added search functionality to response view
 - Bugfix: Handling of FormData
 - Upgraded rxdart
+
+## 1.1.1
+
+- Formatting
