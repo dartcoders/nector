@@ -1,9 +1,17 @@
+# CHANGELOG
+
 ## 1.0.0
 
-- TODO: Logs network calls via intercepting dio for android.
+- Logs network calls via intercepting dio for android.
 
 ## 1.0.1
 
-- TODO: Upgraded dio version
-  Disabled on click dismiss of entry notification
-  UI enhancements
+- Upgraded dio version
+- Disabled on click dismiss of entry notification
+- UI enhancements
+
+## 1.1.0
+
+- Added search functionality to response view
+- Bugfix: Handling of FormData
+- Upgraded rxdart
